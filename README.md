@@ -1,7 +1,5 @@
 
 
----
-
 ## First Message Prompt (to paste when starting the conversation with the 3 files attached)
 
 ```
@@ -29,7 +27,7 @@ three files fully before responding, understand the subprocess communication pro
 and the self-reinforcing narrative loop, then confirm you're ready for tasks.
 ```
 
----
+
 
 ## Customize Section (system-prompt-style instructions for the ChatGPT Project)
 
@@ -76,7 +74,7 @@ MODIFICATION PROTOCOL:
 
 
 
-"""
+---
 FRANZ -- Visual AI Agent Loop for Windows 11
 
 Autonomous desktop agent that observes the screen through a vision-language
@@ -84,9 +82,9 @@ model, executes actions, and evolves its own identity through a self-reinforcing
 narrative loop. Three standalone subprocess scripts communicate via JSON over
 stdin/stdout pipes.
 
-================================================================================
+
 SYSTEM ARCHITECTURE
-================================================================================
+
 
     +-------------------+          +-------------------+          +-------------------+
     |     main.py       |  stdin   |   execute.py      |  stdin   |   capture.py      |
@@ -97,9 +95,9 @@ SYSTEM ARCHITECTURE
     |                   |  stdout  |                   |  stdout  |  Annotation draw  |
     +-------------------+  JSON    +-------------------+  base64  +-------------------+
 
-================================================================================
+
 SUBPROCESS COMMUNICATION PROTOCOL
-================================================================================
+
 
     main.py --> execute.py (stdin JSON):
         {
@@ -130,9 +128,9 @@ SUBPROCESS COMMUNICATION PROTOCOL
             "screenshot_b64":   str         Base64 PNG of annotated screen
         }
 
-================================================================================
+
 DATA PACKAGE LIFECYCLE -- TRACED EXAMPLE
-================================================================================
+
 
     Suppose state.story contains this raw VLM output from the previous turn:
 
@@ -391,9 +389,9 @@ DATA PACKAGE LIFECYCLE -- TRACED EXAMPLE
         goto STEP 1
 
 
-================================================================================
+
 FIRST TURN BEHAVIOR (NO SPECIAL CASE)
-================================================================================
+
 
     state.story = ""     (empty string, initialized by PipelineState)
 
@@ -412,9 +410,9 @@ FIRST TURN BEHAVIOR (NO SPECIAL CASE)
     Every turn is structurally identical. The empty string is just a string.
 
 
-================================================================================
+
 SELF-ADAPTING NARRATIVE ARCHITECTURE
-================================================================================
+
 
     The system prompt is FIXED and NEVER changes between turns.
     It describes who the Entity is and how to respond.
@@ -436,9 +434,9 @@ SELF-ADAPTING NARRATIVE ARCHITECTURE
     No prompt engineering per turn. The narrative IS the memory.
 
 
-================================================================================
+
 SINGLE SOURCE OF TRUTH
-================================================================================
+
 
     state.story = raw
 
@@ -454,9 +452,9 @@ SINGLE SOURCE OF TRUTH
     feeds back into state.story. The pipeline is tamper-free.
 
 
-================================================================================
+
 TOOL CONFIGURATION AND OBSERVATION MODE
-================================================================================
+
 
     ToolConfig provides per-tool active/inactive toggles.
     EXECUTE_ACTIONS provides a master switch.
@@ -471,9 +469,9 @@ TOOL CONFIGURATION AND OBSERVATION MODE
     and sees what it would have done, without side effects.
 
 
-================================================================================
+
 VISUAL ANNOTATION MARK VOCABULARY
-================================================================================
+
 
     All marks drawn in magenta (ACTION_PRIMARY = 255, 50, 200, 255)
     on the screenshot AFTER the actions have been executed:
@@ -508,9 +506,9 @@ VISUAL ANNOTATION MARK VOCABULARY
         No visual annotation (not a spatial action)
 
 
-================================================================================
+
 SCREENSHOT CADENCE
-================================================================================
+
 
     The VLM controls observation frequency by including screenshot()
     in its ACTIONS. The pipeline detects this and sets wants_screenshot.
@@ -527,9 +525,9 @@ SCREENSHOT CADENCE
         Each turn captures fresh state. For dynamic content monitoring.
 
 
-================================================================================
+
 PIPELINE INPUT (INJECTED RESPONSES)
-================================================================================
+
 
     CLI arguments are paths to JSON files in OpenAI chat completion format:
 
@@ -547,9 +545,9 @@ PIPELINE INPUT (INJECTED RESPONSES)
     external routers, agent orchestrators, or deterministic replay.
 
 
-================================================================================
+
 CONSOLE OUTPUT DISCIPLINE
-================================================================================
+
 
     stdout shows ONLY: print(raw, flush=True)
 
@@ -560,9 +558,9 @@ CONSOLE OUTPUT DISCIPLINE
     Any non-data text would contaminate its reasoning.
 
 
-================================================================================
+
 STATE PERSISTENCE
-================================================================================
+
 
     dump/run_YYYYMMDD_HHMMSS/
         {timestamp_ms}.png      Annotated screenshot (per turn)
@@ -582,9 +580,9 @@ STATE PERSISTENCE
     ./story.txt                 Live-updating project root copy
 
 
-================================================================================
+
 DEPENDENCIES
-================================================================================
+
 
     Standard library only. No third-party packages.
 
@@ -592,8 +590,6 @@ DEPENDENCIES
                     dataclasses, datetime, pathlib, typing
     execute.py:     ctypes, json, subprocess, sys, time, pathlib, typing
     capture.py:     base64, ctypes, json, math, struct, sys, zlib, typing
-"""
-
 
 
 
